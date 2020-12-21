@@ -19,7 +19,8 @@
     "dotenv-safe": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^4.2.0",
-    "install": "^0.13.0"
+    "install": "^0.13.0",
+    "joi": "^17.3.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.9",
