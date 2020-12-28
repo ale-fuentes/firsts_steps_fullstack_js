@@ -18,7 +18,7 @@ describe('testing router accounts', () => {
     };
 
 
-    it('POST /accounts/ - must return status 201', async () => {
+    it('POST /accounts/ - ERROR : must return status 201', async () => {
 
         const res = await requestSTest(app)
             .post('/accounts/')
@@ -28,7 +28,7 @@ describe('testing router accounts', () => {
 
     });
 
-    it('GET /accounts/ - must return status 200', async () => {
+    it('GET /accounts/ - SUCCESS : must return status 200', async () => {
 
         const res = await requestSTest(app)
             .get('/accounts/')
@@ -38,7 +38,7 @@ describe('testing router accounts', () => {
 
     });
 
-    it('GET /accounts/:id - must return status 200', async () => {
+    it('GET /accounts/:id - SUCCESS : must return status 200', async () => {
 
         const res = await requestSTest(app)
             .get(`/accounts/${payload.id}`)
@@ -48,7 +48,16 @@ describe('testing router accounts', () => {
 
     });
 
-    it('PATCH /accounts/:id - must return status 200', async () => {
+    it('GET /accounts/:id - ERROR : must return status 404', async () => {
+
+        const res = await requestSTest(app)
+            .get(`/accounts/${idWrong}`)
+
+        expect(res.status).toEqual(404);
+
+    });
+
+    it('PATCH /accounts/:id - SUCCESS : must return status 200', async () => {
 
         payload.name = nameUpdate;
 
@@ -61,7 +70,7 @@ describe('testing router accounts', () => {
 
     });
 
-    it('PATCH /accounts/:id - must return status 404', async () => {
+    it('PATCH /accounts/:id - ERROR : must return status 404', async () => {
 
         const res = await requestSTest(app)
             .patch(`/accounts/${idWrong}`)
@@ -71,7 +80,7 @@ describe('testing router accounts', () => {
 
     });
 
-    it('PATCH /accounts/:id - must return status 400', async () => {
+    it('PATCH /accounts/:id - ERROR : must return status 400', async () => {
 
         const res = await requestSTest(app)
             .patch(`/accounts/abc`)

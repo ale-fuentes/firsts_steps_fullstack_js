@@ -19,7 +19,7 @@ describe('Testing routes to authentication', () => {
         status: 100
     };
 
-    it('POST /account/login - 200 Ok', async () => {
+    it('POST /account/login - SUCCESS : 200 Ok', async () => {
 
         // mock
         await request(app)
@@ -38,7 +38,7 @@ describe('Testing routes to authentication', () => {
 
     });
 
-    it('POST /account/login - 422 Unprocessable Entity (WebDAV)', async () => {
+    it('POST /account/login - ERROR : 422 Unprocessable Entity (WebDAV)', async () => {
 
         payload.password =  passwordShort;
 
@@ -50,7 +50,7 @@ describe('Testing routes to authentication', () => {
 
     });
 
-    it('POST /account/login - 401 Unauthorized', async () => {
+    it('POST /account/login - ERROR : 401 Unauthorized', async () => {
 
         payload.password = passwordWrong;
 
@@ -62,7 +62,7 @@ describe('Testing routes to authentication', () => {
 
     });
 
-    it('POST /account/logout - 200 Ok', async () => {
+    it('POST /account/logout - SUCCESS : 200 Ok', async () => {
 
         const result = await request(app)
             .post('/accounts/logout');
