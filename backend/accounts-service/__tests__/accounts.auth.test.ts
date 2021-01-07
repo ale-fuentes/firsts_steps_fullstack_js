@@ -1,74 +1,96 @@
 import request from 'supertest';
-import app from '../src/app'
+import { expect, beforeAll, afterAll, describe } from '@jest/globals';
+
+import app from '../src/core/app'
+import { IAccount } from '../src/models/account';
+import repository from '../src/models/accountRepository'
+
+const testEmail = 'jest@jest.com';
+const hashPassword = '$2a$10$6rPAU7jtU1sWPmVhfYha3.aHx6Vwbfhr.OZnYQeXIchZCwvJMQ3bq';
+const testPassword = '123456';
+
+beforeAll(async () => {
+    const testAccount: IAccount = {
+        name: 'jest',
+        email: testEmail,
+        password: hashPassword,
+        domain: 'jest.com'
+    };
+
+    const result = await repository.add(testAccount);
+    console.log(`beforeAll ... ${ JSON.stringify(result)}`);
+});
+
+afterAll(async () => {
+    const result = await repository.removeByEmail(testEmail);
+    console.log(`beforeAll ... ${result}`);
+});
 
 describe('Testing routes to authentication', () => {
-
-    //mock data
-    const password = '123456';
-    const passwordWrong = 'abc123';
-    const passwordShort = '123';
-    const payload = {
-        email: 'ale@ale.com',
-        password: password,
-    };
-    const payloadNewUser = {
-        id: 1,
-        name: 'alejandro',
-        email: 'ale@ale.com',
-        password: '123456',
-        status: 100
-    };
 
     it('POST /account/login - SUCCESS : 200 Ok', async () => {
 
         // mock
-        await request(app)
-        .post('/accounts/')
-        .send(payloadNewUser);
-
+        const payload = {
+            email: testEmail,
+            password: testPassword
+        }
+        
         // test
         const result = await request(app)
-            .post('/accounts/login')
-            .send(payload);
-
+        .post('/accounts/login')
+        .send(payload);
+        
         expect(result.status).toEqual(200);
         expect(result.body.auth).toBeTruthy();
         expect(result.body.token).toBeTruthy();
-
-
+        
+        
     });
-
+    
     it('POST /account/login - ERROR : 422 Unprocessable Entity (WebDAV)', async () => {
-
-        payload.password =  passwordShort;
-
+        
+        // mock
+        const payload = {
+            email: testEmail,
+        }
+        
+        // test
         const result = await request(app)
-            .post('/accounts/login')
-            .send(payload);
-
+        .post('/accounts/login')
+        .send(payload);
+        
         expect(result.status).toEqual(422);
-
+        
     });
-
+    
     it('POST /account/login - ERROR : 401 Unauthorized', async () => {
-
-        payload.password = passwordWrong;
-
+        
+        // mock
+        const payload = {
+            email: testEmail,
+            password: testPassword + '1'
+        }
+        
+        // test
         const result = await request(app)
-            .post('/accounts/login')
-            .send(payload);
-
+        .post('/accounts/login')
+        .send(payload);
+        
         expect(result.status).toEqual(401);
-
+        
     });
-
+    
     it('POST /account/logout - SUCCESS : 200 Ok', async () => {
-
+        
+        // mock
+       
+        // test
         const result = await request(app)
-            .post('/accounts/logout');
-
+        .post('/accounts/logout');
+        
         expect(result.status).toEqual(200);
-
+        
     });
 
 })

@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import { IAccount } from '../models/account';
-import repository from '../models/accountModel';
+import repository from '../models/accountRepository';
 import auth from '../core/auth';
+import accountModel from '../models/accountModel';
 
 const accounts: IAccount[] = [];
-
 const msgErroFormatID = 'ID is invalid format.';
 
 
@@ -56,7 +56,7 @@ async function setAccount(req: Request, res: Response, next: any) {
         if (!accountId) throw new Error(msgErroFormatID);
 
         const accountParams = req.body as IAccount;
-
+        accountParams.password = auth.hashPassword(accountParams.password);
         const updateAccount = await repository.set(accountId, accountParams);
         updateAccount.password = '';
 
@@ -79,16 +79,22 @@ async function setAccount(req: Request, res: Response, next: any) {
 
 }
 
-function loginAccount(req: Request, res: Response, next: any) {
+async function loginAccount(req: Request, res: Response, next: any) {
     try {
         const loginParams = req.body as IAccount;
+        const account = await repository.findByEmail(loginParams.email);
+        // console.log(`INFO: login account: ${JSON.stringify(account)}`);
 
-        const index = accounts.findIndex(item => item.email === loginParams.email && item.password === loginParams.password);
-        if (index === -1) return res.status(401).end();
-
-        res.json({ auth: true, token: {} })
+        if (account !== null) {
+            const isValid = auth.comparePassword(loginParams.password, account.password)
+            if (isValid) {
+                const token = await auth.sign(account.id!);
+                return res.json({ auth: true, token });
+            }
+        }
+        return res.status(401).end();
     } catch (error) {
-        console.log(error);
+        console.log(`loggin account: ${error}`);
         res.status(400).end();
     }
 

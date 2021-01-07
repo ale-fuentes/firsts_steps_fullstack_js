@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Joi from 'joi';
+import auth from '../core/auth';
 import { accountSchema, accountUpdateSchema, loginSchema } from '../models/accountSchema';
 
 function validateSchema(schema: Joi.ObjectSchema<any>, req: Request, res: Response, next: any) {
@@ -13,14 +14,37 @@ function validateSchema(schema: Joi.ObjectSchema<any>, req: Request, res: Respon
     res.status(422).end();
 }
 
-function validateAccount(req: Request, res: Response, next: any) {
+function validateAccountSchema(req: Request, res: Response, next: any) {
     return validateSchema(accountSchema, req, res, next);
 }
-function validateUpdateAccount(req: Request, res: Response, next: any) {
+function validateUpdateAccountSchema(req: Request, res: Response, next: any) {
     return validateSchema(accountUpdateSchema, req, res, next);
 }
-function validateLogin(req: Request, res: Response, next: any) {
+function validateLoginSchema(req: Request, res: Response, next: any) {
     return validateSchema(loginSchema, req, res, next);
 }
 
-export { validateAccount, validateUpdateAccount, validateLogin }
+async function validateAuth(req: Request, res: Response, next: any){
+    try {
+        const token = req.headers['x-access-token'] as string;
+        if(!token) return res.status(401).end();
+
+        const payload = await auth.verify(token);
+        if(!payload) return res.status(401).end();
+
+        res.locals.payload = payload;
+        next();
+
+    } catch (error) {
+        console.log(`validate auth : ${error}`)
+        res.status(400).end();
+    }
+
+}
+
+export { 
+    validateAccountSchema, 
+    validateUpdateAccountSchema, 
+    validateLoginSchema, 
+    validateAuth 
+}

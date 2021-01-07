@@ -4,10 +4,10 @@ import Sequelize, { Model, Optional } from 'sequelize';
 //app
 import { IAccount } from './account';
 
-interface AccountCreationAttributes extends Optional<IAccount, "id"> { }
-export interface AccountModel extends Model<IAccount, AccountCreationAttributes>, IAccount { }
+interface IAccountCreationAttributes extends Optional<IAccount, "id"> { }
+export interface IAccountModel extends Model<IAccount, IAccountCreationAttributes>, IAccount { }
 
-const accountModel = database.define<AccountModel>('account', {
+export default database.define<IAccountModel>('account', {
     id: {
         type: Sequelize.INTEGER.UNSIGNED,
         primaryKey: true,
@@ -15,16 +15,16 @@ const accountModel = database.define<AccountModel>('account', {
         allowNull: false
     },
     name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(150),
         allowNull: false
     },
     email: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(150),
         allowNull: false,
         unique: true
     },
     password: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
         allowNull: false
     },
     status: {
@@ -33,34 +33,9 @@ const accountModel = database.define<AccountModel>('account', {
         defaultValue: 100
     },
     domain: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
         allowNull: true
     }
 
 });
 
-function findAll() {
-    return accountModel.findAll<AccountModel>();
-}
-function findById(id: number) {
-    return accountModel.findByPk<AccountModel>(id);
-}
-function add(account: IAccount) {
-    return accountModel.create(account);
-}
-async function set(id:number, account: IAccount) {
-    const origianlAccount = await accountModel.findByPk<AccountModel>(id);
-    if (origianlAccount !== null) {
-        origianlAccount.name = account.name;
-        origianlAccount.domain = account.domain;
-        account.status = account.status
-        if(!account.password)
-        origianlAccount.password = account.password;
-
-        await origianlAccount.save();
-        return  origianlAccount;
-    }
-    throw new Error(`Account not found.`);
-}
-
-export default { findAll, findById, add, set }
