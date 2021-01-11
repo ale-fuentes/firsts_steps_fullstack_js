@@ -1,5 +1,6 @@
 import app from './app'
-import database from './db'
+//import database from '../data/db'
+import database from 'ms-commons/data/db'
 
 (async () => {
 

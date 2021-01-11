@@ -1,5 +1,5 @@
 //core
-import database from '../core/db';
+import database from '../data/db';
 import Sequelize, { Model, Optional } from 'sequelize';
 //app
 import { IAccount } from './account';
