@@ -1,0 +1,36 @@
+{
+  "name": "contacts-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && ts-node -r dotenv/config -r tsconfig-paths/register ./dist/contacts-service/src/core/server",
+    "compile": "tsc && ts-node -r dotenv/config -r tsconfig-paths/register  ./dist/contacts-service/src/core/server",
+    "dev": "nodemon -e ts,json --ignore dist --exec \"npm run compile\"",
+    "test": "jest"
+  },
+  "author": "alefu",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv-safe": "^8.2.0",
+    "express": "^4.17.1",
+    "joi": "^17.3.0",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.3.5",
+    "ts-node": "^9.0.0",
+    "tsconfig-paths": "^3.9.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.9",
+    "@types/jest": "^26.0.19",
+    "@types/joi": "^14.3.4",
+    "@types/node": "^14.14.13",
+    "@types/supertest": "^2.0.10",
+    "@types/validator": "^13.1.1",
+    "jest": "^26.6.3",
+    "supertest": "^6.0.1",
+    "ts-jest": "^26.4.4",
+    "typescript": "^4.1.3"
+  }
+}
