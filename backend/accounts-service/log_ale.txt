@@ -1,0 +1,36 @@
+
+> accounts-service@1.0.0 dev E:\PROJECTs\NODE\firsts_steps_fullstack_js\backend\accounts-service
+> nodemon -e ts,json --ignore dist --exec "npm run compile"
+
+[33m[nodemon] 2.0.6[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): *.*[39m
+[33m[nodemon] watching extensions: ts,json[39m
+[32m[nodemon] starting `npm run compile`[39m
+
+> accounts-service@1.0.0 compile E:\PROJECTs\NODE\firsts_steps_fullstack_js\backend\accounts-service
+> tsc && ts-node -r dotenv/config -r tsconfig-paths/register  ./dist/accounts-service/src/core/server
+
+src/models/accountModel.ts(10,32): error TS2558: Expected 0 type arguments, but got 1.
+src/models/accountRepository.ts(7,33): error TS2344: Type 'IAccountModel' does not satisfy the constraint 'Model<any, any>'.
+  The types of 'sequelize.Sequelize.and' are incompatible between these types.
+    Type '(...args: (WhereOperators | WhereAttributeHash<any> | Where)[]) => AndOperator<any>' is not assignable to type '(...args: (WhereOperators | WhereAttributeHash | Where)[]) => AndOperator'.
+      Types of parameters 'args' and 'args' are incompatible.
+        Type 'WhereOperators | WhereAttributeHash | Where' is not assignable to type 'WhereOperators | WhereAttributeHash<any> | Where'.
+          Type 'WhereOperators' is not assignable to type 'WhereOperators | WhereAttributeHash<any> | Where'.
+            Type 'WhereOperators' is not assignable to type 'WhereAttributeHash<any>'.
+              Index signature is missing in type 'WhereOperators'.
+src/models/accountRepository.ts(11,34): error TS2344: Type 'IAccountModel' does not satisfy the constraint 'Model<any, any>'.
+src/models/accountRepository.ts(15,33): error TS2344: Type 'IAccountModel' does not satisfy the constraint 'Model<any, any>'.
+src/models/accountRepository.ts(19,12): error TS2684: The 'this' context of type 'typeof Model' is not assignable to method's 'this' of type '(new () => Model<unknown, unknown>) & typeof Model'.
+  Type 'typeof Model' is not assignable to type 'new () => Model<unknown, unknown>'.
+    Cannot assign an abstract constructor type to a non-abstract constructor type.
+src/models/accountRepository.ts(23,57): error TS2344: Type 'IAccountModel' does not satisfy the constraint 'Model<any, any>'.
+src/models/accountRepository.ts(38,33): error TS2345: Argument of type 'DestroyOptions<IAccount>' is not assignable to parameter of type 'DestroyOptions'.
+  Types of property 'where' are incompatible.
+    Type 'Fn | Literal | Where | WhereAttributeHash<IAccount> | AndOperator<IAccount> | OrOperator<IAccount> | undefined' is not assignable to type 'Literal | WhereAttributeHash | Where | AndOperator | OrOperator | undefined'.
+      Type 'Fn' is not assignable to type 'Literal | WhereAttributeHash | Where | AndOperator | OrOperator | undefined'.
+        Type 'Fn' is not assignable to type 'WhereAttributeHash'.
+          Index signature is missing in type 'Fn'.
+src/models/accountRepository.ts(42,33): error TS2345: Argument of type 'DestroyOptions<IAccount>' is not assignable to parameter of type 'DestroyOptions'.
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m

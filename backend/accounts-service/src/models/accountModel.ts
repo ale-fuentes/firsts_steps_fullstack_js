@@ -1,7 +1,7 @@
 //core
-import database from '../data/db';
 import Sequelize, { Model, Optional } from 'sequelize';
 //app
+import database from 'ms-commons/data/db';
 import { IAccount } from './account';
 
 interface IAccountCreationAttributes extends Optional<IAccount, "id"> { }
@@ -34,7 +34,7 @@ export default database.define<IAccountModel>('account', {
     },
     domain: {
         type: Sequelize.STRING(100),
-        allowNull: true
+        allowNull: false
     }
 
 });

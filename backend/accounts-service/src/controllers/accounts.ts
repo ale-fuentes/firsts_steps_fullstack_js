@@ -2,14 +2,12 @@ import { Request, Response } from 'express';
 import { IAccount } from '../models/account';
 import repository from '../models/accountRepository';
 import auth from '../core/auth';
-import accountModel from '../models/accountModel';
 
 const accounts: IAccount[] = [];
 const msgErroFormatID = 'ID is invalid format.';
 
-
 async function getAccounts(req: Request, res: Response, next: any) {
-    const accounts = await repository.findAll();
+    const accounts : IAccount[] = await repository.findAll();
     res.json(accounts.map(item => {
         item.password = '';
         return item;
